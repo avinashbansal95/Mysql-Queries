@@ -458,3 +458,14 @@ from
                      ,[May], [Jun], [Jul], [Aug]
                      ,[Sep], [Oct], [Nov], [Dec])
    )  as t2;
+
+
+select a.* from (select row_number() over() as 'serial_number', a.* from Activity a) a 
+join (select row_number() over() as 'serial_number'  , a.* from Activity a) b 
+on a.event_date = date_sub(b.event_date, interval 1 day) 
+and a.serial_number!=b.serial_number;
+
+
+select count(1) as desiredCount from Activity a join Activity b 
+on a.event_date = date_sub(b.event_date, interval 1 day) 
+and a.player_id = b.player_id;
